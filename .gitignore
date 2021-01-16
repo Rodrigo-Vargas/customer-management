@@ -1,0 +1,5 @@
+node_modules
+
+# dotnet core
+bin/
+obj/

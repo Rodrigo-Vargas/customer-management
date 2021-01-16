@@ -1,0 +1,19 @@
+{
+   "private": true,
+   "scripts": {
+      "start": "concurrently \"cd ./api && cross-env NODE_PATH=../node_modules/ ASPNETCORE_ENVIRONMENT=Development dotnet watch run\" \"cd ./client && cross-env NODE_ENV=development webpack serve\""
+   },
+   "devDependencies": {
+      "concurrently": "^5.3.0",
+      "cross-env": "^7.0.3",
+      "webpack": "^5.15.0",
+      "webpack-cli": "^4.3.1",
+      "webpack-dev-server": "^3.11.2"
+   },
+   "dependencies": {
+      "babel-loader": "^8.2.2",
+      "babel-preset-react-app": "^10.0.0",
+      "react": "^17.0.1",
+      "react-dom": "^17.0.1"
+   }
+}
