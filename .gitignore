@@ -3,3 +3,10 @@ node_modules
 # dotnet core
 bin/
 obj/
+
+# User-specific files
+*.suo
+*.user
+
+# IDE Files
+.vs/
