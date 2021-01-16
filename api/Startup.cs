@@ -37,11 +37,6 @@ namespace api
 
          if (env.IsDevelopment())
          {
-            app.UseSpa(spa =>
-            {
-                spa.UseProxyToSpaDevelopmentServer("http://localhost:8080/");
-            });
-
             app.UseDeveloperExceptionPage();
          }
 
@@ -53,7 +48,9 @@ namespace api
 
          app.UseEndpoints(endpoints =>
          {
-            endpoints.MapControllers();
+            endpoints.MapControllerRoute(
+               name: "default",
+               pattern: "{controller=Home}/{action=Index}/{id?}");
          });
       }
    }
