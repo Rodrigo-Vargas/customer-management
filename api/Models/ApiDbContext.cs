@@ -12,6 +12,7 @@ namespace api.Models
       public DbSet<Region> Regions { get; set; }
       public DbSet<City> Cities { get; set; }
       public DbSet<Classification> Classifications { get; set; }
+      public DbSet<Customer> Customers { get; set; }
 
       protected override void OnModelCreating(ModelBuilder modelBuilder)
       {

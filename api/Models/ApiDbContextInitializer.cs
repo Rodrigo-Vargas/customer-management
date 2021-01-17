@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -32,8 +33,9 @@ namespace api.Models
          SeedRegions();
          SeedCities();
          SeedClassifications();
-
          _context.SaveChanges();
+
+         SeedCustomers();
       }
 
       private void SeedGenders()
@@ -71,6 +73,34 @@ namespace api.Models
             return;
         
          _context.Cities.Add(new City() { Name = "Porto Alegre", Region = _context.Regions.FirstOrDefault(x => x.Name == "Rio Grande do Sul") });
+      }
+
+      private void SeedCustomers()
+      {
+          if (_context.Customers.Any())
+            foreach (var u in _context.Customers)
+               _context.Remove(u);
+
+         CreateCustomer("Maurício", "(11) 95429999", "Masculine", "Porto Alegre", "Rio Grande do Sul", "VIP", new DateTime(2016, 9, 10));
+         CreateCustomer("Carla", "(53) 94569999", "Feminine", "Porto Alegre", "Rio Grande do Sul", "VIP",  new DateTime(2015, 10, 10));
+         CreateCustomer("Maria", "(64) 94518888", "Feminine", "Porto Alegre", "Rio Grande do Sul", "Sporadic",  new DateTime(2013, 10, 12));
+         CreateCustomer("Douglas", "(51) 12455555", "Masculine", "Porto Alegre", "Rio Grande do Sul", "Regular",  new DateTime(2016, 5, 5));
+         CreateCustomer("Marta", "(51) 45788888", "Feminine", "Porto Alegre", "Rio Grande do Sul", "Regular",  new DateTime(2016, 8, 8));
+      }
+
+      private void CreateCustomer(string name, string phone, string gender, string city, string region, string classification, DateTime lastPurchase)
+      {
+         _context.Customers.Add(new Customer() {
+            Name = name,
+            Phone = phone,
+            Gender = _context.Genders.FirstOrDefault(x => x.Name == gender),
+            Region = _context.Regions.FirstOrDefault(x => x.Name == region),
+            City = _context.Cities.FirstOrDefault(x => x.Name == city),
+            Classification = _context.Classifications.FirstOrDefault(x => x.Name == classification),
+            LastPurchase = lastPurchase
+         });
+
+         _context.SaveChanges();
       }
    }
 
