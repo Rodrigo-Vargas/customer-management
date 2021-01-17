@@ -40,8 +40,9 @@ namespace api
             // Configure Entity Framework Initializer for seeding
             services.AddTransient<IDefaultDbContextInitializer, ApiDbContextInitializer>();
 
-
             ConfigureAuthentication(services);
+
+            services.AddScoped<IUserService, UserService>();
         }
 
         private void ConfigureAuthentication(IServiceCollection services)
