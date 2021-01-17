@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace api.Models
@@ -25,7 +26,15 @@ namespace api.Models
       {
          await UserHelper.CreateUserAsync(_userManager, _roleManager, "admin@app.com", "Admin@123", "Administrative");
          await UserHelper.CreateUserAsync(_userManager, _roleManager, "seller1@app.com", "Seller@1", "Seller");
-         await UserHelper.CreateUserAsync(_userManager, _roleManager, "seller2@app.com", "Seller@2", "Seller");
+         await UserHelper.CreateUserAsync(_userManager, _roleManager, "seller2@app.com", "Seller@2", "Seller");         
+
+         if (!_context.Genders.Any())
+         {
+            _context.Genders.Add(new Gender() { Name = "Masculine" });
+            _context.Genders.Add(new Gender() { Name = "Feminine" });
+         }
+
+         _context.SaveChanges();
       }
     }
 
