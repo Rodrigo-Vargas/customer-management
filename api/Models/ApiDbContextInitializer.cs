@@ -41,6 +41,11 @@ namespace api.Models
             _context.Regions.Add(new Region() { Name = "Curitiba" });
          }
 
+         if (!_context.Cities.Any())
+         {
+            _context.Cities.Add(new City() { Name = "Porto Alegre", Region = _context.Regions.FirstOrDefault(x => x.Name == "Rio Grande do Sul") });
+         }
+
          _context.SaveChanges();
       }
     }
