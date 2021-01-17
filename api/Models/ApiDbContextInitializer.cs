@@ -81,14 +81,14 @@ namespace api.Models
             foreach (var u in _context.Customers)
                _context.Remove(u);
 
-         CreateCustomer("Maurício", "(11) 95429999", "Masculine", "Porto Alegre", "Rio Grande do Sul", "VIP", new DateTime(2016, 9, 10));
-         CreateCustomer("Carla", "(53) 94569999", "Feminine", "Porto Alegre", "Rio Grande do Sul", "VIP",  new DateTime(2015, 10, 10));
-         CreateCustomer("Maria", "(64) 94518888", "Feminine", "Porto Alegre", "Rio Grande do Sul", "Sporadic",  new DateTime(2013, 10, 12));
-         CreateCustomer("Douglas", "(51) 12455555", "Masculine", "Porto Alegre", "Rio Grande do Sul", "Regular",  new DateTime(2016, 5, 5));
-         CreateCustomer("Marta", "(51) 45788888", "Feminine", "Porto Alegre", "Rio Grande do Sul", "Regular",  new DateTime(2016, 8, 8));
+         CreateCustomer("Maurício", "(11) 95429999", "Masculine", "Porto Alegre", "Rio Grande do Sul", "VIP", new DateTime(2016, 9, 10), "seller2@app.com");
+         CreateCustomer("Carla", "(53) 94569999", "Feminine", "Porto Alegre", "Rio Grande do Sul", "VIP",  new DateTime(2015, 10, 10), "seller1@app.com");
+         CreateCustomer("Maria", "(64) 94518888", "Feminine", "Porto Alegre", "Rio Grande do Sul", "Sporadic",  new DateTime(2013, 10, 12), "seller1@app.com");
+         CreateCustomer("Douglas", "(51) 12455555", "Masculine", "Porto Alegre", "Rio Grande do Sul", "Regular",  new DateTime(2016, 5, 5), "seller1@app.com");
+         CreateCustomer("Marta", "(51) 45788888", "Feminine", "Porto Alegre", "Rio Grande do Sul", "Regular",  new DateTime(2016, 8, 8), "seller2@app.com");
       }
 
-      private void CreateCustomer(string name, string phone, string gender, string city, string region, string classification, DateTime lastPurchase)
+      private void CreateCustomer(string name, string phone, string gender, string city, string region, string classification, DateTime lastPurchase, string userEmail)
       {
          _context.Customers.Add(new Customer() {
             Name = name,
@@ -97,7 +97,8 @@ namespace api.Models
             Region = _context.Regions.FirstOrDefault(x => x.Name == region),
             City = _context.Cities.FirstOrDefault(x => x.Name == city),
             Classification = _context.Classifications.FirstOrDefault(x => x.Name == classification),
-            LastPurchase = lastPurchase
+            LastPurchase = lastPurchase,
+            User = _context.Users.FirstOrDefault(x => x.Email == userEmail)
          });
 
          _context.SaveChanges();
