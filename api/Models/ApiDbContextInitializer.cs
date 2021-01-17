@@ -34,6 +34,13 @@ namespace api.Models
             _context.Genders.Add(new Gender() { Name = "Feminine" });
          }
 
+         if (!_context.Regions.Any())
+         {
+            _context.Regions.Add(new Region() { Name = "Rio Grande do Sul" });
+            _context.Regions.Add(new Region() { Name = "São Paulo" });
+            _context.Regions.Add(new Region() { Name = "Curitiba" });
+         }
+
          _context.SaveChanges();
       }
     }

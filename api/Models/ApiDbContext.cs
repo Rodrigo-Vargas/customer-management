@@ -9,6 +9,7 @@ namespace api.Models
 
       public DbSet<User> ApplicationUsers { get; set; }
       public DbSet<Gender> Genders { get; set; }
+      public DbSet<Region> Regions { get; set; }
 
       protected override void OnModelCreating(ModelBuilder modelBuilder)
       {
