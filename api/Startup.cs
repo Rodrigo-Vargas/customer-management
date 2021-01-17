@@ -37,6 +37,10 @@ namespace api
                 options.UseSqlite(connection);
             });
 
+            // Configure Entity Framework Initializer for seeding
+            services.AddTransient<IDefaultDbContextInitializer, ApiDbContextInitializer>();
+
+
             ConfigureAuthentication(services);
         }
 
