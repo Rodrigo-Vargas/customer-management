@@ -1,6 +1,8 @@
+using System.IO;
 using api.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -10,7 +12,12 @@ namespace api
    {
       public static void Main(string[] args)
       {
-         var host = CreateHostBuilder(args).Build();
+         var config = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json")
+            .Build();
+
+         var host = CreateHostBuilder(config, args).Build();
 
          using (var scope = host.Services.CreateScope())
          {
@@ -29,11 +36,13 @@ namespace api
          host.Run();
       }
 
-      public static IHostBuilder CreateHostBuilder(string[] args) =>
+      public static IHostBuilder CreateHostBuilder(IConfigurationRoot config, string[] args) =>
          Host.CreateDefaultBuilder(args)
             .ConfigureWebHostDefaults(webBuilder =>
             {
-               webBuilder.UseStartup<Startup>();
+               webBuilder
+               .UseUrls(config["serverBindingUrl"])
+               .UseStartup<Startup>();
             });
     }
 }

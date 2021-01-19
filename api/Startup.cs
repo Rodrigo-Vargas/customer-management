@@ -102,11 +102,6 @@ namespace api
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
-            if (env.IsDevelopment())
-            {
-               app.UseDeveloperExceptionPage();
-            }
-
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -122,6 +117,15 @@ namespace api
             });
 
             CreateRoles(serviceProvider).Wait();
+
+            if (env.IsDevelopment())
+            {
+               app.UseSpa(spa =>
+               {
+                  spa.UseProxyToSpaDevelopmentServer("http://localhost:8080/");
+               });
+               app.UseDeveloperExceptionPage();
+            }
         }
     }
 }
