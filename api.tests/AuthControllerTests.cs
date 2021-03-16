@@ -2,7 +2,9 @@ using api.Models;
 using api.ViewModels.Login;
 using api.ViewModels.Register;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -13,18 +15,32 @@ using Xunit;
 
 namespace api.tests
 {
-    public class AuthControllerTests : IClassFixture<WebApplicationFactory<Startup>>
+    public class AuthControllerTests : IClassFixture<WebApplicationFactory<Startup>>, IDisposable
     {
         private readonly HttpClient httpClient;
         private readonly ApiDbContext repository;
+         private readonly SqliteConnection _connection;
+         private readonly DbContextOptions _options;
 
         public AuthControllerTests(WebApplicationFactory<Startup> factory)
         {
             httpClient = factory.CreateClient();
 
-            var optionsBuilder = new DbContextOptionsBuilder<ApiDbContext>();
-            optionsBuilder.UseInMemoryDatabase("MyInMemoryDatabseName"); 
-            repository = new ApiDbContext(optionsBuilder.Options);
+             var connectionStringBuilder =
+                new SqliteConnectionStringBuilder { DataSource = ":memory:" };
+            var connection = new SqliteConnection(connectionStringBuilder.ToString());
+
+            var options = new DbContextOptionsBuilder<ApiDbContext>()
+               .UseSqlite(connection)
+               .Options;
+
+            using (var context = new ApiDbContext(options))
+               context.Database.EnsureCreated();
+
+            using (var scope = factory.Services.CreateScope())
+            {
+               repository = scope.ServiceProvider.GetService<ApiDbContext>();
+            }
         }
 
          [Fact]
@@ -74,5 +90,11 @@ namespace api.tests
             Assert.Equal(credentials.Email, loginResult.Email);
             Assert.False(string.IsNullOrWhiteSpace(loginResult.Token));
         }
-    }
+    
+    
+      public void Dispose()
+      {
+         _connection.Close();
+      }
+   }
 }

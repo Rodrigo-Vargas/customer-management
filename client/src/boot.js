@@ -1,13 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-function App() {
-   return (
-      <h1>Hello World</h1>
-   );
-}
+import { BrowserRouter as Router } from 'react-router-dom';
+import Routes from './components/routes';
+import './styles/App.css';
 
 ReactDOM.render(
-   <App />,
+   <Router>
+      <Routes />
+   </Router>,
    document.getElementById("app")
 );

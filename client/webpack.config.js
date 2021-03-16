@@ -1,15 +1,33 @@
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const webpack = require('webpack');
 
 const paths = require('./paths');
 
-const hasJsxRuntime = (() => { 
+const hasJsxRuntime = (() => {
    try {
-     require.resolve('react/jsx-runtime');
-     return true;
+      require.resolve('react/jsx-runtime');
+      return true;
    } catch (e) {
-     return false;
+      return false;
    }
- })();
+})();
+
+const CSSLoader = {
+   test: /\.css$/,
+   use: [
+      MiniCssExtractPlugin.loader,
+      'css-loader',
+      {
+         loader: 'postcss-loader',
+         options: {
+            postcssOptions: {
+               config: path.resolve(__dirname, 'postcss.config.js'),
+            },
+         },
+      },
+   ]
+};
 
 var config = {
    mode: 'development',
@@ -37,9 +55,14 @@ var config = {
                   ],
                ],
             }
-         }
+         },
+         CSSLoader
       ]
-   }
+   },
+   plugins: [      
+      new webpack.ProgressPlugin(),
+      new MiniCssExtractPlugin({ filename: '[name].css' }),
+   ]
 }
 
 module.exports = config;
